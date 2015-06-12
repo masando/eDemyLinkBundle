@@ -1,0 +1,7 @@
+services:
+    edemy.link:
+        class: "eDemy\\LinkBundle\\Controller\\LinkController"
+        calls:
+            - [setEventDispatcher, ["@event_dispatcher"]]
+        tags:
+            - { name: kernel.event_subscriber }

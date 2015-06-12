@@ -1,0 +1,35 @@
+<div id="links" style="max-width: 800px; margin: 0 auto">
+    {#
+    <h1 style="border-bottom: 2px solid #080;">Estos son nuestros servicios</h1>
+    #}
+
+    {% for link in entities %}
+        <a href="{{ link.url }}">
+            <h1>{{ link.title }}</h1>
+        </a>
+        {% if link.url %}
+            <div class="clear">
+            <div class="fb-like" data-width="300px" data-href="http://www.facebook.com/{{ link.url }}" data-layout="standard" data-action="like" data-show-faces="true" data-share="false"></div>
+            </div>
+        {% endif %}
+
+        <p>{{ link.abstract|raw }}
+
+        {% if mode == 'image' %}
+            <a href="{{ link.url }}">Click para visitar.</a>
+            </p>
+            <a href="{{ link.url }}">
+                {% if link.path %}
+                    <div style="max-width: 640px; clear: both; margin-bottom: 20px; margin-left: auto; margin-right: auto;">
+                        <img src="{{ link.webpath }}" width="100%" alt="{{ link.title }}" style="border: 1px solid #CCC" />
+                    </div>
+                {% endif %}
+            </a>
+        {% else %}
+            {% if link.path %}
+                <img src="{{ link.webpath }}" width="640px;" />
+            {% endif %}
+        {% endif %}
+
+    {% endfor %}
+</div>

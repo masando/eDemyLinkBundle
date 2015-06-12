@@ -1,0 +1,16 @@
+{% for entity in entities %}
+    <h1>
+        <a href="{{ entity.url}}">{{ entity.title }}</a>
+    </h1>
+    <div>
+        {{ entity.url }}
+        <br/>
+        {{ entity.abstract }}
+        <br/>
+        {% if entity.webpath %}
+            <img src="{{ entity.webpath }}" width="300px" />
+        {% endif %}
+        <a href="{{ path('edemy_link_edit', { 'id': entity.id }) }}">Edit</a>
+    </div>
+    <hr/>
+{% endfor %}
