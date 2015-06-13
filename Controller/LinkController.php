@@ -14,6 +14,7 @@ class LinkController extends BaseController
     {
         return self::getSubscriptions('link', ['link'], array(
             'edemy_link_frontpage_lastmodified' => array('onFrontpageLastModified', 0),
+            'edemy_link_frontpage' => array('onFrontpage', 0),
             //'edemy_agenda_actividad_details' => array('onActividadDetails', 0),
         ));
     }
@@ -31,11 +32,12 @@ class LinkController extends BaseController
 
     public function onFrontpage(ContentEvent $event)
     {
+//        die();
         $entities = $this->get('doctrine.orm.entity_manager')->getRepository('eDemyLinkBundle:Link')->findAll();
 
         //$likeurl = $this->getParam('likeurl');
 
-        $this->addEventModule($event, 'index.html.twig', array(
+        $this->addEventModule($event, 'templates/link', array(
             'mode' => $this->getParam('edemy_link_frontpage_mode'),
             'entities' => $entities,
             //'likeurl' => $likeurl,

@@ -6,8 +6,26 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class eDemyLinkBundle extends Bundle
 {
-    public static function getBundleName()
+    public static function getBundleName($type = null)
     {
-        return 'eDemyLinkBundle';
+        if ($type == null) {
+
+            return 'eDemyLinkBundle';
+        } else {
+            if ($type == 'Simple') {
+
+                return 'Link';
+            } else {
+                if ($type == 'simple') {
+
+                    return 'link';
+                }
+            }
+        }
+    }
+
+    public static function eDemyBundle() {
+
+        return true;
     }
 }
