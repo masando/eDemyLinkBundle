@@ -5,3 +5,10 @@ services:
             - [setEventDispatcher, ["@event_dispatcher"]]
         tags:
             - { name: kernel.event_subscriber }
+
+    edemy.twig.fb_extension:
+        class:  eDemy\FbBundle\Twig\FbExtension
+        calls:
+            - [setContainer, ["@service_container"]]
+        tags:
+            - { name: twig.extension }
