@@ -125,7 +125,14 @@ class Link extends BaseEntity
 
     protected function getUploadDir()
     {
-        return '/images';
+        $host = $_SERVER['HTTP_HOST'];
+        if($host) {
+
+            return '/images_' . $host;
+        } else {
+
+            return '/images';
+        }
     }
 
     /**

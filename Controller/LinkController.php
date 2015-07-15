@@ -56,7 +56,7 @@ class LinkController extends BaseController
 
         //$likeurl = $this->getParam('likeurl');
 
-        $this->addEventModule($event, 'templates/main/link/link', array(
+        $this->addEventModule($event, 'templates/link/link', array(
             'mode' => $this->getParam('edemy_link_frontpage_mode'),
             'entities' => $entities,
             //'likeurl' => $likeurl,
