@@ -104,31 +104,59 @@ class Link extends BaseEntity
         return $this->path;
     }
 
-    public function getAbsolutePath()
+    public function getAbsolutePath($host = null)
     {
         return null === $this->path
             ? null
-            : $this->getUploadRootDir().'/'.$this->path;
+            : $this->getUploadRootDir($this->getHost()).'/'.$this->path;
+    }
+
+    public function getHost()
+    {
+        $host = $_SERVER['HTTP_HOST'];
+        $domain = $host;
+        $parts = explode(".", $host);
+        if (count($parts) == 3) {
+            $subdomain = $parts[0];
+            $domain = $parts[1] . '.' . $parts[2];
+        } else {
+            $domain = $parts[0] . '.' . $parts[1];
+            $subdomain = 'www';
+        }
+
+        return $domain;
     }
 
     public function getWebPath()
     {
         return null === $this->path
             ? null
-            : $this->getUploadDir().'/'.$this->path;
+            : $this->getUploadDir($this->getHost()).'/'.$this->path;
     }
 
-    protected function getUploadRootDir()
+    protected function getUploadRootDir($host = null)
     {
-        return __DIR__.'/../../../../web'.$this->getUploadDir();
+        if($host) {
+            $basedir = '/var/www/'.$host;
+        } else {
+            if(strpos(__DIR__, 'app/cache/')) {
+                // subimos hasta el directorio raíz de la aplicación (3 niveles)
+                $basedir = __DIR__ . '/../../../web';
+            } else {
+                // si no subimos 6 niveles hasta el directorio raíz de la aplicación
+                $basedir = __DIR__ . '/../../../../../../web';
+            }
+        }
+
+        return $basedir . $this->getUploadDir($host);
     }
 
-    protected function getUploadDir()
+    protected function getUploadDir($host = null)
     {
         $host = $_SERVER['HTTP_HOST'];
         if($host) {
 
-            return '/images_' . $host;
+            return '/images';
         } else {
 
             return '/images';
@@ -189,13 +217,13 @@ class Link extends BaseEntity
         // if there is an error when moving the file, an exception will
         // be automatically thrown by move(). This will properly prevent
         // the entity from being persisted to the database on error
-        $this->getFile()->move($this->getUploadRootDir(), $this->path);
+        $this->getFile()->move($this->getUploadRootDir($this->getHost()), $this->path);
 
         // check if we have an old image
         if (isset($this->temp)) {
             // delete the old image
-            if(file_exists($this->getUploadRootDir().'/'.$this->temp)) {
-                unlink($this->getUploadRootDir().'/'.$this->temp);
+            if(file_exists($this->getUploadRootDir($this->getHost()).'/'.$this->temp)) {
+                unlink($this->getUploadRootDir($this->getHost()).'/'.$this->temp);
             }
             // clear the temp image path
             $this->temp = null;
